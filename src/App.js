@@ -90,7 +90,7 @@ const App = () => {
         {!isRootCreated ? (
           // Root Creation Mode
           <>
-            <h1>Overthink</h1>
+            <h1>Overthink v2</h1>
             <textarea
               placeholder="Enter the root state outcome..."
               value={stateOutcome}
@@ -113,42 +113,59 @@ const App = () => {
           </>
         ) : (
           // Node Expansion Mode
-          <>
-            <h1>Overthink</h1>
-            <div>
-              <label htmlFor="outcomeID">Outcome ID:</label>
-              <input
-                type="number"
-                id="outcomeID"
-                value={outcomeID}
-                onChange={(e) => setOutcomeID(e.target.value)}
-                placeholder="Enter the Outcome ID"
-                style={{ width: "100%", marginBottom: "10px" }}
-              />
-            </div>
-            <div>
-              <label htmlFor="additionalContext">Few More Details:</label>
-              <textarea
-                id="additionalContext"
-                value={additionalContext}
-                onChange={(e) =>
-                  e.target.value.length <= MAX_CHAR_LIMIT
-                    ? setAdditionalContext(e.target.value)
-                    : null
-                }
-                rows="3"
-                style={{ width: "100%", marginBottom: "10px" }}
-              />
-              <p>{`${additionalContext.length}/${MAX_CHAR_LIMIT}`}</p>
-            </div>
-            <button
-              onClick={handleNodeExpansion}
-              disabled={outcomeID.length === 0 || additionalContext.length > MAX_CHAR_LIMIT}
-              style={{ padding: "10px", backgroundColor: "#000", color: "#fff" }}
-            >
-              Over-Think
-            </button>
-          </>
+          // Inside the Node Expansion Mode
+        <>
+          <h1>Overthink v2</h1>
+          <div>
+            <label htmlFor="outcomeID">Thought ID:</label>
+            <input
+              type="number"
+              id="outcomeID"
+              value={outcomeID}
+              onChange={(e) => setOutcomeID(e.target.value)}
+              placeholder="Enter the Outcome ID"
+              style={{ width: "100%", marginBottom: "10px" }}
+            />
+          </div>
+          <div>
+            <label htmlFor="additionalContext">Tell me more:</label>
+            <textarea
+              id="additionalContext"
+              value={additionalContext}
+              onChange={(e) =>
+                e.target.value.length <= MAX_CHAR_LIMIT
+                  ? setAdditionalContext(e.target.value)
+                  : null
+              }
+              rows="3"
+              placeholder="Additional context is required to expand this thought..."
+              style={{ width: "100%", marginBottom: "10px" }}
+            />
+            <p>{`${additionalContext.length}/${MAX_CHAR_LIMIT}`}</p>
+          </div>
+          <button
+            onClick={handleNodeExpansion}
+            disabled={
+              outcomeID.length === 0 ||
+              additionalContext.length === 0 || // Ensures `additionalContext` is not empty
+              additionalContext.length > MAX_CHAR_LIMIT
+            }
+            style={{
+              padding: "10px",
+              backgroundColor:
+                additionalContext.length === 0 || outcomeID.length === 0
+                  ? "#ccc" // Disable button styling
+                  : "#000", // Enable button styling
+              color: "#fff",
+              cursor:
+                additionalContext.length === 0 || outcomeID.length === 0
+                  ? "not-allowed"
+                  : "pointer",
+            }}
+          >
+            Over-Think
+          </button>
+        </>
         )}
         <button
           onClick={handleResetTree}
